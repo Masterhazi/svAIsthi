@@ -1,0 +1,9 @@
+streamlit 
+requests
+pillow
+transformers
+python-dotenv
+huggingface_hub
+fpdf
+fpdf2
+google-generativeai
