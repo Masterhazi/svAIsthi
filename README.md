@@ -12,7 +12,7 @@ Welcome to **svAIsthi** 🎉, your AI-driven assistant for personalized health g
 Upload an image of the device you're using, and we’ll generate a custom guide to ensure you're using it correctly. Just click on the **"Choose the image"** button to get started!  
 
 <p align="center">
-  <img src="https://media.giphy.com/media/3ohhwNq64xHnr9pGfm/giphy.gif" alt="Image Upload Animation" width="300"/>
+  <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExMWh3dHd1dGlkNDZyN2p3MWtndmZtMTJ4MjNlNXBiMmgwdXF3azk2bCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4EFt4UAegpqTy3nVce/giphy.gif" alt="Image Upload Animation" width="300"/>
 </p>
 
 ### 🧑‍⚕️ Personalized Health Details
@@ -26,7 +26,7 @@ Simply fill in your **name**, **age**, and any **current or previous medical con
 Once the inputs are ready and the image is uploaded, click **Generate**. Our AI assistant will create a **step-by-step guide** on how to use your medical device, including online resources for further reading. You’ll be supported with easy-to-follow steps for a safer experience.
 
 <p align="center">
-  <img src="https://media.giphy.com/media/26AHJwivYfIUyNkF2/giphy.gif" alt="Guide Generation Animation" width="300"/>
+  <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHNpNDA1djdjbjliZ3NlcmxrY2hzdXd2dnFoY3ZzNGM3MjRsczYwNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YQAJ0uJ1u55imESTde/giphy.gif" alt="Guide Generation Animation" width="300"/>
 </p>
 
 ---
@@ -78,10 +78,10 @@ svAIsthi leverages **Google's Generative AI model**, enhanced by your health det
 To all the open-source contributors who made this possible! 🎉
 
 <p align="center">
-  <img src="https://media.giphy.com/media/5GoVLqeAOo6PK/giphy.gif" alt="Celebration GIF" width="300"/>
+  <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExb3d3bjRsbWw1c2RyZWRwZDQ2OTV5cGJqbXgzNHAzcmExcnhlcDZ0byZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/NfzERYyiWcXU4/giphy.gif" alt="Celebration GIF" width="300"/>
 </p>
 
 ---
 
-🌐 **[Visit Our App](https://your-app-url.com)**  
+🌐 **[Visit Our App](https://svaisthi.streamlit.app/)**  
 Connect with **svAIsthi - Svasth with AI** and take the first step toward a healthier, more informed lifestyle today!
