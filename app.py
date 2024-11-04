@@ -7,7 +7,7 @@ from io import BytesIO
 import re
 from googleapiclient.discovery import build
 
-# Load environment variables
+# Load environment variable
 load_dotenv()
 youtube_api_key = os.getenv("YOUTUBE_API_KEY")
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
