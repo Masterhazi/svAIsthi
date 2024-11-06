@@ -13,13 +13,8 @@ load_dotenv()
 youtube_api_key = os.getenv("YOUTUBE_API_KEY")
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-# Configuring the page
-st.set_page_config(page_title="💊 svAIsthi", page_icon="https://raw.githubusercontent.com/Masterhazi/svAIsthi/refs/heads/main/health-8.ico")
-st.title('svAIsthi - Svasth with AI')
-st.caption('Your AI assistant for health education and help')
-
-# Inject OneSignal JavaScript SDK and initialize with your App ID
-onesignal_script = f"""
+# OneSignal Initialization Script
+onesignal_script = """
 <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
 <script>
     window.OneSignal = window.OneSignal || [];
@@ -27,19 +22,20 @@ onesignal_script = f"""
         console.log("OneSignal initializing...");
         
         OneSignal.init({
-            appId: "{os.getenv("ONESIGNAL_APP_ID")}",  // Replace with your actual OneSignal App ID
+            appId: 'YOUR_ONESIGNAL_APP_ID',  // Replace with your actual OneSignal App ID
             notifyButton: {
                 enable: true, // Enables a floating "bell" icon for subscribing
             },
             serviceWorkerPath: '/OneSignalSDKWorker.js'
         });
 
-        // Check for subscription status and log it
+        // Listen for subscription changes
         OneSignal.on('subscriptionChange', function(isSubscribed) {
             console.log("Subscription status changed:", isSubscribed);
             if (isSubscribed) {
                 OneSignal.getUserId(function(userId) {
                     console.log("OneSignal User ID:", userId);
+                    // Optionally, send this userId to your backend for targeting
                 });
             }
         });
@@ -56,13 +52,23 @@ onesignal_script = f"""
     });
 </script>
 """
-# Add the script to your Streamlit app
-components.html(onesignal_script, height=0)
 
-onesignal_script += """
-<button onclick="OneSignal.showSlidedownPrompt();">Subscribe to Notifications</button>
-"""
-components.html(onesignal_script, height=0)
+# Replace the placeholder with your actual OneSignal App ID from environment variables
+onesignal_app_id = os.getenv("ONESIGNAL_APP_ID")
+if not onesignal_app_id:
+    st.error("OneSignal App ID is not set in the .env file.")
+else:
+    onesignal_script = onesignal_script.replace('YOUR_ONESIGNAL_APP_ID', onesignal_app_id)
+    # Inject the OneSignal script into the Streamlit app
+    components.html(onesignal_script, height=0)
+
+# Configuring the page
+st.set_page_config(
+    page_title="💊 svAIsthi",
+    page_icon="https://github.com/Masterhazi/svAIsthi/blob/main/health-8.ico",
+)
+st.title('svAIsthi - Svasth with AI')
+st.caption('Your AI assistant for health education and help')
 
 # Image uploader
 imaged = st.file_uploader("Choose the image", type=["jpg", "png", "jpeg", "webp"])
@@ -81,42 +87,26 @@ current_medication = st.text_input('Please enter your current medication')
 medication_routine = st.text_input('Please enter your medication routine')
 
 # User input prompt
-# User input
-user_inp = f"""provide a disclaimer that this is not a medical advice but just a 
-            handy tool. According to these factors the user is {user_age} years old, 
-            the user had {previous_conditions} previously and now suffering from {current_condition}
-            the user used {previous_medication} for {previous_conditions}, now using
-            {current_medication} for {current_condition} for {medication_routine}, can you please look at the uploaded image and help the user
-            to properly use the device with a step-by-step detailed guide along with any relevant internet resources?
-            make sure the prompt is generated according to the user's age.
-            Start the guide with the greeting Hi {user_name} then "Title:" name of the device and in the 
-            next paragraph provide an overview of the Purpose of the device, 
-            highlighting how it may support the user’s specific current condition and needs related to age, then proceed with the step-by-step guide with relevant side headings,
-            in the next section Explain the importance of following the current medication routine consistently to achieve the best therapeutic outcome.
-            in the next section Check for potential interactions between current medications and previous medications. 
-            also explain the basic effects of the medication other than the intended effect
-            If relevant, provide specific instructions 
-            on time intervals for using the device safely in relation to their medication schedule.
-            and finally provide the user with the relevant internet resources for further information. 
-            In the end, wish the user good luck and a speedy recovery."""
+user_inp = f"""provide a disclaimer that this is not a medical advice but just a handy tool. According to these factors the user is {user_age} years old, the user had {previous_conditions} previously and now suffering from {current_condition} the user used {previous_medication} for {previous_conditions}, now using {current_medication} for {current_condition} for {medication_routine}, can you please look at the uploaded image and help the user to properly use the device with a step-by-step detailed guide along with any relevant internet resources? make sure the prompt is generated according to the user's age. Start the guide with the greeting Hi {user_name} then "Title:" name of the device and in the next paragraph provide an overview of the Purpose of the device, highlighting how it may support the user’s specific current condition and needs related to age, then proceed with the step-by-step guide with relevant side headings, in the next section Explain the importance of following the current medication routine consistently to achieve the best therapeutic outcome. in the next section Check for potential interactions between current medications and previous medications. also explain the basic effects of the medication other than the intended effect If relevant, provide specific instructions on time intervals for using the device safely in relation to their medication schedule. and finally provide the user with the relevant internet resources for further information. In the end, wish the user good luck and a speedy recovery."""
 
-# Function for generating AI response
 def genmodel(user_input, img):
     model = genai.GenerativeModel(model_name="gemini-1.5-flash")
     response = model.generate_content([user_input, img])
     return response.text
 
-# Function for extracting YouTube links
 def extract_youtube_link(text):
+    # Regular expression to find the YouTube link
     match = re.search(r'https?://(?:www\.)?youtube\.com/watch\?v=[\w-]+', text)
     return match.group(0) if match else None
 
-# Function for device title extraction
 def extract_device_title(response_text):
+    # Regular expression to find the device title after 'Title:' and remove trailing period or newline
     match = re.search(r'Title:\s*(.+?)[\.\n]', response_text)
-    return match.group(1).strip().rstrip('.') if match else None
+    if match:
+        title = match.group(1).strip()  # Extract and strip any trailing spaces
+        return title.rstrip('.')  # Remove any trailing period
+    return None
 
-# Function to get YouTube video link
 def get_youtube_video(query):
     youtube = build("youtube", "v3", developerKey=youtube_api_key)
     request = youtube.search().list(
@@ -126,31 +116,45 @@ def get_youtube_video(query):
         maxResults=1
     )
     response = request.execute()
+    
+    # Extract video ID from the first search result
     video_id = response["items"][0]["id"]["videoId"]
-    return f"https://www.youtube.com/watch?v={video_id}"
+    video_url = f"https://www.youtube.com/watch?v={video_id}"
+    return video_url
 
 # Function to send notification through OneSignal REST API
 def send_onesignal_notification(title, message):
+    if not os.getenv("ONESIGNAL_REST_API_KEY") or not os.getenv("ONESIGNAL_APP_ID"):
+        st.error("OneSignal REST API Key or App ID not set in the .env file.")
+        return None, None
+
     headers = {
         "Authorization": f"Basic {os.getenv('ONESIGNAL_REST_API_KEY')}",
         "Content-Type": "application/json; charset=utf-8"
     }
     payload = {
-        "app_id": "1e596efe-b658-4e16-91c4-bf1052d49eba",  # Replace with your OneSignal App ID
+        "app_id": os.getenv("ONESIGNAL_APP_ID"),  # Use the environment variable
         "headings": {"en": title},
         "contents": {"en": message},
         "included_segments": ["Subscribed Users"]
     }
-    response = requests.post("https://onesignal.com/api/v1/notifications", headers=headers, json=payload)
+    response = requests.post(
+        "https://onesignal.com/api/v1/notifications",
+        headers=headers,
+        json=payload
+    )
     return response.status_code, response.json()
 
 # Button to trigger test notification
 if st.button("Send Notification"):
-    status_code, response = send_onesignal_notification("Test Notification", "This is a test notification from svAIsthi.")
+    status_code, response = send_onesignal_notification(
+        "Test Notification", 
+        "This is a test notification from svAIsthi."
+    )
     if status_code == 200:
         st.success("Notification sent successfully!")
     else:
-        st.error("Failed to send notification.")
+        st.error(f"Failed to send notification. Response: {response}")
 
 # Generate guide button
 submit = st.button('Generate', type='primary')
