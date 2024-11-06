@@ -13,6 +13,12 @@ load_dotenv()
 youtube_api_key = os.getenv("YOUTUBE_API_KEY")
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
+#configuring
+st.set_page_config(
+    page_title="💊 svAIsthi",
+    page_icon="https://github.com/Masterhazi/svAIsthi/blob/main/health-8.ico",
+)
+
 # OneSignal Initialization Script
 onesignal_script = """
 <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
@@ -63,10 +69,6 @@ else:
     components.html(onesignal_script, height=0)
 
 # Configuring the page
-st.set_page_config(
-    page_title="💊 svAIsthi",
-    page_icon="https://github.com/Masterhazi/svAIsthi/blob/main/health-8.ico",
-)
 st.title('svAIsthi - Svasth with AI')
 st.caption('Your AI assistant for health education and help')
 
