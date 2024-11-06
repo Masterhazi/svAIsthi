@@ -19,34 +19,49 @@ st.title('svAIsthi - Svasth with AI')
 st.caption('Your AI assistant for health education and help')
 
 # Inject OneSignal JavaScript SDK and initialize with your App ID
-onesignal_script = """
+onesignal_script = f"""
 <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
 <script>
     window.OneSignal = window.OneSignal || [];
     OneSignal.push(function() {
+        console.log("OneSignal initializing...");
+        
         OneSignal.init({
-            appId: "1e596efe-b658-4e16-91c4-bf1052d49eba",  // Replace with your actual OneSignal App ID
+            appId: "{os.getenv("ONESIGNAL_APP_ID")}",  // Replace with your actual OneSignal App ID
             notifyButton: {
-                enable: true,
+                enable: true, // Enables a floating "bell" icon for subscribing
             },
             serviceWorkerPath: '/OneSignalSDKWorker.js'
         });
 
+        // Check for subscription status and log it
         OneSignal.on('subscriptionChange', function(isSubscribed) {
+            console.log("Subscription status changed:", isSubscribed);
             if (isSubscribed) {
                 OneSignal.getUserId(function(userId) {
                     console.log("OneSignal User ID:", userId);
-                    // Here, you can also save the userId to your backend if needed
                 });
+            }
+        });
+
+        // Prompt the user to subscribe if not already subscribed
+        OneSignal.isPushNotificationsEnabled(function(isEnabled) {
+            if (!isEnabled) {
+                console.log("Prompting user to enable notifications...");
+                OneSignal.showSlidedownPrompt();
+            } else {
+                console.log("Notifications are already enabled.");
             }
         });
     });
 </script>
 """
+# Add the script to your Streamlit app
+components.html(onesignal_script, height=0)
+
 onesignal_script += """
 <button onclick="OneSignal.showSlidedownPrompt();">Subscribe to Notifications</button>
 """
-
 components.html(onesignal_script, height=0)
 
 # Image uploader
