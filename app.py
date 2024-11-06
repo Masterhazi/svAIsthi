@@ -66,8 +66,24 @@ current_medication = st.text_input('Please enter your current medication')
 medication_routine = st.text_input('Please enter your medication routine')
 
 # User input prompt
-user_inp = f"""provide a disclaimer that this is not a medical advice but just a handy tool. According to these factors...
-"""
+# User input
+user_inp = f"""provide a disclaimer that this is not a medical advice but just a 
+            handy tool. According to these factors the user is {user_age} years old, 
+            the user had {previous_conditions} previously and now suffering from {current_condition}
+            the user used {previous_medication} for {previous_conditions}, now using
+            {current_medication} for {current_condition} for {medication_routine}, can you please look at the uploaded image and help the user
+            to properly use the device with a step-by-step detailed guide along with any relevant internet resources?
+            make sure the prompt is generated according to the user's age.
+            Start the guide with the greeting Hi {user_name} then "Title:" name of the device and in the 
+            next paragraph provide an overview of the Purpose of the device, 
+            highlighting how it may support the user’s specific current condition and needs related to age, then proceed with the step-by-step guide with relevant side headings,
+            in the next section Explain the importance of following the current medication routine consistently to achieve the best therapeutic outcome.
+            in the next section Check for potential interactions between current medications and previous medications. 
+            also explain the basic effects of the medication other than the intended effect
+            If relevant, provide specific instructions 
+            on time intervals for using the device safely in relation to their medication schedule.
+            and finally provide the user with the relevant internet resources for further information. 
+            In the end, wish the user good luck and a speedy recovery."""
 
 # Function for generating AI response
 def genmodel(user_input, img):
