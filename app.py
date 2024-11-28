@@ -1,5 +1,5 @@
 import streamlit as st
-from Login import Login
+from Login import login_page
 from Register import Register
 import google.generativeai as genai
 import os
