@@ -74,7 +74,7 @@ elif choice == "Login":
         config['cookie']['expiry_days']
     )
 
-    name, authentication_status, username = authenticator.login('Let me in', 'main')
+    name, authentication_status, username = authenticator.login('main')
 
     if authentication_status:
         authenticator.logout('Logout', 'main')
