@@ -24,10 +24,7 @@ youtube_api_key = os.getenv("YOUTUBE_API_KEY")
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 # Configuring the page
-st.set_page_config(
-    page_title="💊 svAIsthi",
-    page_icon="https://github.com/Masterhazi/svAIsthi/blob/main/health-8.ico",
-)
+
 
 
 # Configuring the page content
