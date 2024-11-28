@@ -1,9 +1,3 @@
-
-
-
-username = st.text_input("Username")
-password = st.text_input("Password", type="password")
-
 import streamlit as st
 import streamlit_authenticator as stauth
 import yaml
