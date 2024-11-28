@@ -11,8 +11,6 @@ st.title("Welcome to svAIsthi")
 st.caption("Choose your action below:")
 
 # Sidebar for navigation
-if "logged_in" not in st.session_state:
-    st.session_state["logged_in"] = False  # Set default login status to False
 
 if st.session_state["logged_in"]:
     home_page()  # If logged in, show the home page
