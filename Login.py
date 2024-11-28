@@ -37,8 +37,6 @@ def login_page():
 
         if authentication_status:
             # Store login status in session_state
-            st.session_state.logged_in = True
-            st.write(st.session_state.logged_in)
             st.session_state.username = username
             st.session_state.name = name
             authenticator.logout('Logout', 'main')
