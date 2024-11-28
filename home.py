@@ -11,24 +11,22 @@ import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 
-
-if not st.session_state.get("authenticated", False):
+# Ensure the user is authenticated
+if "authenticated" not in st.session_state or not st.session_state["authenticated"]:
     st.warning("Please log in first.")
     st.session_state["current_page"] = "Home"
     st.experimental_rerun()
+
 # Load environment variables
 load_dotenv()
 youtube_api_key = os.getenv("YOUTUBE_API_KEY")
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-#configuring
+# Configuring the page
 st.set_page_config(
     page_title="💊 svAIsthi",
     page_icon="https://github.com/Masterhazi/svAIsthi/blob/main/health-8.ico",
 )
-
-
-
 
 # OneSignal Initialization Script
 onesignal_script = """
@@ -79,7 +77,7 @@ else:
     # Inject the OneSignal script into the Streamlit app
     components.html(onesignal_script, height=0)
 
-# Configuring the page
+# Configuring the page content
 st.title('svAIsthi - Svasth with AI')
 st.caption('Your AI assistant for health education and help')
 
@@ -94,7 +92,6 @@ picture = st.camera_input('Take a picture', disabled = not enable)
 if picture is not None:
     imaged = picture
     imgg = Image.open(imaged)
-    
 
 # User information inputs
 st.header('User Information')
@@ -203,7 +200,7 @@ if submit and imaged:
         except Exception as e:
             st.write("An error occurred:", str(e))
 
-
+# Log out button
 if st.button("Log Out"):
     st.session_state["authenticated"] = False
     st.session_state["current_page"] = "Home"
