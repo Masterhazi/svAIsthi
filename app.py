@@ -23,10 +23,17 @@ st.set_page_config(
 )
 
 
+import streamlit as st
+import streamlit_authenticator as stauth
+import yaml
+from yaml.loader import SafeLoader
+
 # Load existing credentials
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
+# Main page
+st.title("Welcome to My App")
 
 # Buttons for Register and Login
 choice = st.selectbox("Choose an option", ["Register", "Login"])
@@ -43,7 +50,7 @@ if choice == "Register":
         elif any(user['email'] == email for user in config['credentials']['usernames'].values()):
             st.error("Email already registered. Please use a different email.")
         else:
-            hashed_password = stauth.Hasher([password]).generate()[0]
+            hashed_password = stauth.Hasher([password]).hash()[0]
             new_user = {
                 "email": email,
                 "name": username,
@@ -64,8 +71,7 @@ elif choice == "Login":
         config['credentials'],
         config['cookie']['name'],
         config['cookie']['key'],
-        config['cookie']['expiry_days'],
-        config['preauthorized']
+        config['cookie']['expiry_days']
     )
 
     name, authentication_status, username = authenticator.login('Let me in', 'main')
