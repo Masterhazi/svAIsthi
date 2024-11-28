@@ -44,7 +44,7 @@ def login_page():
             st.success(f'Welcome *{name}*')
 
             # Use rerun to trigger a page refresh and go to home.py
-            st.rerun()
+            st.switch_page('home.py')
 
         elif authentication_status == False:
             st.error('Incorrect password. Please try again.')
