@@ -20,15 +20,10 @@ st.set_page_config(page_title="svAIsthi - Home", page_icon="💊")
 st.title("Welcome to svAIsthi")
 st.caption("Choose your action below:")
 
-if 'logged_in' in st.session_state and st.session_state.logged_in:
-    import home  # If logged in, load the home page
-else:
-    # Otherwise, show the login or register options
-    st.title("Welcome to svAIsthi")
-    page = st.sidebar.selectbox("Choose a page", ["Login", "Register"])
+# Sidebar for navigation
+page = st.sidebar.selectbox("Choose a page", ["Login", "Register"])
 
-    if page == "Login":
-        import Login  # If login is selected, load the login page
-    elif page == "Register":
-        import Register  # If register is selected, load the register page
-
+if page == "Login":
+    login_page()
+elif page == "Register":
+    register_page()
