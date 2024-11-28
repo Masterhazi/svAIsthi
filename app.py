@@ -80,9 +80,6 @@ if imaged:
 enable = st.checkbox('Enable camera')
 picture = st.camera_input('Take a picture', disabled = not enable)
 
-if picture:
-    st.image(picture, caption = 'thanks for the image', use_column_width= True)
-
 if picture is not None:
     imaged = picture
     imgg = Image.open(imaged)
