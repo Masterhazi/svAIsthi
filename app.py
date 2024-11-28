@@ -21,7 +21,7 @@ st.title("Welcome to svAIsthi")
 st.caption("Choose your action below:")
 
 # Sidebar for navigation
-page = st.sidebar.selectbox("Choose a page", ["Login", "Register"])
+page = st.sidebar.selectbox("Choose a page", ["Sign in", "Sign up"])
 
 if page == "Login":
     login_page()
