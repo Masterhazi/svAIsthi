@@ -7,6 +7,9 @@ import re
 from googleapiclient.discovery import build
 import requests
 import streamlit.components.v1 as components
+import streamlit_authenticator as stauth
+import yaml
+from yaml.loader import SafeLoader
 
 # Load environment variables
 load_dotenv()
@@ -18,6 +21,59 @@ st.set_page_config(
     page_title="💊 svAIsthi",
     page_icon="https://github.com/Masterhazi/svAIsthi/blob/main/health-8.ico",
 )
+
+
+# Load existing credentials
+with open('config.yaml') as file:
+    config = yaml.load(file, Loader=SafeLoader)
+
+# Registration form
+st.title("Register")
+username = st.text_input("Username")
+email = st.text_input("Email")
+password = st.text_input("Password", type="password")
+
+if st.button("Register"):
+    if username in config['credentials']['usernames']:
+        st.error("Username already exists. Please choose a different username.")
+    elif any(user['email'] == email for user in config['credentials']['usernames'].values()):
+        st.error("Email already registered. Please use a different email.")
+    else:
+        hashed_password = stauth.Hasher([password]).generate()[0]
+        new_user = {
+            "email": email,
+            "name": username,
+            "password": hashed_password
+        }
+        config['credentials']['usernames'][username] = new_user
+
+        # Save updated credentials
+        with open('config.yaml', 'w') as file:
+            yaml.dump(config, file)
+
+        st.success("User registered successfully!")
+
+# Login form
+st.title("Login")
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days'],
+    config['preauthorized']
+)
+
+name, authentication_status, username = authenticator.login('Login', 'main')
+
+if authentication_status:
+    authenticator.logout('Logout', 'main')
+    st.write(f'Welcome *{name}*')
+    st.title('Some content')
+elif authentication_status == False:
+    st.error('Username/password is incorrect')
+elif authentication_status == None:
+    st.warning('Please enter your username and password')
+
 
 # OneSignal Initialization Script
 onesignal_script = """
