@@ -13,18 +13,18 @@ import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 
+# Initialize session state keys
+if "logged_in" not in st.session_state:
+    st.session_state["logged_in"] = False  # Default to False
 
-st.set_page_config(
-    page_title="💊 svAIsthi",
-    page_icon="💊",
-)
+if "username" not in st.session_state:
+    st.session_state["username"] = None  # Placeholder for username
+
+# Set page configuration
+st.set_page_config(page_title="svAIsthi - Home", page_icon="💊")
 
 st.title("Welcome to svAIsthi")
 st.caption("Choose your action below:")
-
-if 'logged_in' not in st.session_state:
-    st.session_state.logged_in = False
-    st.write('status:', st.session_state.logged_in)
 
 # Sidebar for navigation
 page = st.sidebar.selectbox("Choose a page", ["Sign in", "Sign up"])
@@ -33,3 +33,4 @@ if page == "Sign in":
     login_page()
 elif page == "Sign up":
     register_page()
+
