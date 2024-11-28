@@ -1,5 +1,11 @@
 import streamlit as st
 
+if "current_page" not in st.session_state:
+    st.session_state["current_page"] = "Home"
+
+if st.session_state["current_page"] != "Home":
+    st.experimental_set_query_params(page=st.session_state["current_page"])
+
 # Check if session state is initialized
 if "users" not in st.session_state:
     st.session_state["users"] = {}  # Store users as a dictionary: {username: password}
