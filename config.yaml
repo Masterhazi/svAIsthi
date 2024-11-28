@@ -1,7 +1,12 @@
 credentials:
-  usernames: {}
-
+  usernames:
+    sample_user:
+      email: sample@example.com
+      name: Sample User
+      password: hashed_sample_password
 cookie:
   name: auth_cookie
   key: random_key
-  expiry_days: 0
+  expiry_days: 30
+pre-authorized:
+  - preauthorized_user@example.com
