@@ -3,17 +3,16 @@ import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 
-
-
+# Title for the registration page
 st.title("Register for svAIsthi")
 
 def register_page():
-    # Load existing credentials
     try:
+        # Load existing credentials from config.yaml
         with open('config.yaml') as file:
             config = yaml.load(file, Loader=SafeLoader)
     except FileNotFoundError:
-        # Initialize config if the file does not exist
+        # Initialize the config if file is not found
         config = {
             'credentials': {
                 'usernames': {}
@@ -21,33 +20,51 @@ def register_page():
             'cookie': {
                 'name': 'auth_cookie',
                 'key': 'random_key',
-                'expiry_days': 0
-            }
+                'expiry_days': 30
+            },
+            'pre-authorized': []  # Empty list of pre-authorized emails (can be populated later)
         }
 
-    st.subheader("Register")
-    username = st.text_input("Username")
-    email = st.text_input("Email")
-    password = st.text_input("Password", type="password")
+    st.subheader("Register User")
 
-    if st.button("Sign me up"):
-        if username in config['credentials']['usernames']:
-            st.error("Username already exists. Please choose a different username.")
-        elif any(user.get('email') == email for user in config['credentials']['usernames'].values()):
-            st.error("Email already registered. Please use a different email.")
-        else:
-            # Corrected password hashing using generate()
-            hashed_password = stauth.Hasher([password]).generate()[0]
-            new_user = {
-                "name": username,
-                "email": email,
-                "password": hashed_password
-            }
-            config['credentials']['usernames'][username] = new_user
+    # Define the register_user widget configuration
+    try:
+        # Use the register_user widget
+        email_of_registered_user, username_of_registered_user, name_of_registered_user = stauth.Authenticate(
+            config['credentials'], 
+            config['cookie']['name'], 
+            config['cookie']['key'], 
+            config['cookie']['expiry_days']
+        ).register_user(
+            location='main',  # Registration widget location on the main page
+            pre_authorized=config.get('pre-authorized', []),  # Pre-authorized list of emails
+            fields={'Form name': 'Register user', 'Email': 'Email', 'Username': 'Username', 
+                    'Password': 'Password', 'Repeat password': 'Repeat password', 
+                    'Password hint': 'Password hint', 'Captcha': 'Captcha', 'Register': 'Register'},
+            captcha=True,  # Enable CAPTCHA for security
+            clear_on_submit=True,  # Clear form after submission
+            key='Register user',  # Unique key for widget
+        )
+
+        # If registration was successful, show success message
+        if email_of_registered_user:
+            st.success('User registered successfully!')
+            st.write(f"Registered Email: {email_of_registered_user}")
+            st.write(f"Registered Username: {username_of_registered_user}")
+            st.write(f"Registered Name: {name_of_registered_user}")
+            # Optionally remove user from the pre-authorized list
+            if email_of_registered_user in config['pre-authorized']:
+                config['pre-authorized'].remove(email_of_registered_user)
 
             # Save updated credentials to config.yaml
             with open('config.yaml', 'w') as file:
                 yaml.dump(config, file, default_flow_style=False)
 
-            st.success("User registered successfully! Please log in.")
-            st.experimental_rerun()
+            # Optionally prompt user to log in or redirect to login page
+            st.write("Please log in to continue.")
+
+    except Exception as e:
+        st.error(f"Error during registration: {str(e)}")
+
+# Display the registration form
+register_page()
