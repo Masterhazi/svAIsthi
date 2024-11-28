@@ -11,6 +11,11 @@ import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 
+
+if not st.session_state.get("authenticated", False):
+    st.warning("Please log in first.")
+    st.session_state["current_page"] = "Home"
+    st.experimental_rerun()
 # Load environment variables
 load_dotenv()
 youtube_api_key = os.getenv("YOUTUBE_API_KEY")
@@ -197,3 +202,9 @@ if submit and imaged:
                     st.write("Device title not found in the response.")
         except Exception as e:
             st.write("An error occurred:", str(e))
+
+
+if st.button("Log Out"):
+    st.session_state["authenticated"] = False
+    st.session_state["current_page"] = "Home"
+    st.experimental_rerun()
