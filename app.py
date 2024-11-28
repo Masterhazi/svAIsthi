@@ -28,7 +28,7 @@ else:
     page = st.sidebar.selectbox("Choose a page", ["Login", "Register"])
 
     if page == "Login":
-        import login  # If login is selected, load the login page
+        import Login  # If login is selected, load the login page
     elif page == "Register":
-        import register  # If register is selected, load the register page
+        import Register  # If register is selected, load the register page
 
