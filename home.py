@@ -16,7 +16,7 @@ def home_page():
     if not st.session_state.get("logged_in", False):
         st.warning("Please log in first.")
         st.session_state["current_page"] = "Login"
-        st.experimental_rerun()
+        st.rerun()
 
     # Load environment variables
     load_dotenv()
@@ -122,7 +122,7 @@ def home_page():
     if st.button("Log Out"):
         st.session_state["authenticated"] = False
         st.session_state["current_page"] = "Home"
-        st.experimental_rerun()
+        st.rerun()
 
 # Call home_page function to render the page
 home_page()
