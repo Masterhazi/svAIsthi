@@ -23,67 +23,6 @@ st.set_page_config(
 )
 
 
-import streamlit as st
-import streamlit_authenticator as stauth
-import yaml
-from yaml.loader import SafeLoader
-
-# Load existing credentials
-with open('config.yaml') as file:
-    config = yaml.load(file, Loader=SafeLoader)
-
-# Main page
-st.title("Welcome to My App")
-
-# Buttons for Register and Login
-choice = st.selectbox("Choose an option", ["Register", "Login"])
-
-if choice == "Register":
-    st.subheader("Register")
-    username = st.text_input("Username")
-    email = st.text_input("Email")
-    password = st.text_input("Password", type="password")
-
-    if st.button("Sign me up"):
-        if username in config['credentials']['usernames']:
-            st.error("Username already exists. Please choose a different username.")
-        elif any(user['email'] == email for user in config['credentials']['usernames'].values()):
-            st.error("Email already registered. Please use a different email.")
-        else:
-            hashed_password = stauth.Hasher([password]).hash()[0]
-            new_user = {
-                "email": email,
-                "name": username,
-                "password": hashed_password
-            }
-            config['credentials']['usernames'][username] = new_user
-
-            # Save updated credentials
-            with open('config.yaml', 'w') as file:
-                yaml.dump(config, file)
-
-            st.success("User registered successfully! Please log in.")
-            st.experimental_rerun()
-
-elif choice == "Login":
-    st.subheader("Login")
-    authenticator = stauth.Authenticate(
-        config['credentials'],
-        config['cookie']['name'],
-        config['cookie']['key'],
-        config['cookie']['expiry_days']
-    )
-
-    name, authentication_status, username = authenticator.login('main')
-
-    if authentication_status:
-        authenticator.logout('Logout', 'main')
-        st.write(f'Welcome *{name}*')
-        st.title('Some content')
-    elif authentication_status == False:
-        st.error('Username/password is incorrect')
-    elif authentication_status == None:
-        st.warning('Please enter your username and password')
 
 
 # OneSignal Initialization Script
