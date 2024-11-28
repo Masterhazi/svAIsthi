@@ -1,7 +1,7 @@
 import streamlit as st
 from Login import login_page
 from Register import register_page
-from Home import home_page  # Import the home page function
+from home import home_page  # Import the home page function
 import os
 from dotenv import load_dotenv
 
