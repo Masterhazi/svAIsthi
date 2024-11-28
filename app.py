@@ -83,7 +83,7 @@ picture = st.camera_input('Take a picture', disabled = not enable)
 if picture:
     st.image(picture, caption = 'thanks for the image', type = ['jpg', 'png', 'jpeg', 'webp'])
 
-if imaged is None:
+if picture is not None:
     imaged = picture
     imgg = Image.open(imaged)
     
