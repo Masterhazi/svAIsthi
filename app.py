@@ -1,6 +1,6 @@
 import streamlit as st
 from Login import login_page
-from Register import Register
+from Register import register_page
 import google.generativeai as genai
 import os
 from dotenv import load_dotenv
