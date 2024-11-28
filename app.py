@@ -27,52 +27,57 @@ st.set_page_config(
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
-# Registration form
-st.title("Register")
-username = st.text_input("Username")
-email = st.text_input("Email")
-password = st.text_input("Password", type="password")
 
-if st.button("Register"):
-    if username in config['credentials']['usernames']:
-        st.error("Username already exists. Please choose a different username.")
-    elif any(user['email'] == email for user in config['credentials']['usernames'].values()):
-        st.error("Email already registered. Please use a different email.")
-    else:
-        hashed_password = stauth.Hasher([password]).generate()[0]
-        new_user = {
-            "email": email,
-            "name": username,
-            "password": hashed_password
-        }
-        config['credentials']['usernames'][username] = new_user
+# Buttons for Register and Login
+choice = st.selectbox("Choose an option", ["Register", "Login"])
 
-        # Save updated credentials
-        with open('config.yaml', 'w') as file:
-            yaml.dump(config, file)
+if choice == "Register":
+    st.subheader("Register")
+    username = st.text_input("Username")
+    email = st.text_input("Email")
+    password = st.text_input("Password", type="password")
 
-        st.success("User registered successfully!")
+    if st.button("Sign me up"):
+        if username in config['credentials']['usernames']:
+            st.error("Username already exists. Please choose a different username.")
+        elif any(user['email'] == email for user in config['credentials']['usernames'].values()):
+            st.error("Email already registered. Please use a different email.")
+        else:
+            hashed_password = stauth.Hasher([password]).generate()[0]
+            new_user = {
+                "email": email,
+                "name": username,
+                "password": hashed_password
+            }
+            config['credentials']['usernames'][username] = new_user
 
-# Login form
-st.title("Login")
-authenticator = stauth.Authenticate(
-    config['credentials'],
-    config['cookie']['name'],
-    config['cookie']['key'],
-    config['cookie']['expiry_days'],
-    config['preauthorized']
-)
+            # Save updated credentials
+            with open('config.yaml', 'w') as file:
+                yaml.dump(config, file)
 
-name, authentication_status, username = authenticator.login('Login', 'main')
+            st.success("User registered successfully! Please log in.")
+            st.experimental_rerun()
 
-if authentication_status:
-    authenticator.logout('Logout', 'main')
-    st.write(f'Welcome *{name}*')
-    st.title('Some content')
-elif authentication_status == False:
-    st.error('Username/password is incorrect')
-elif authentication_status == None:
-    st.warning('Please enter your username and password')
+elif choice == "Login":
+    st.subheader("Login")
+    authenticator = stauth.Authenticate(
+        config['credentials'],
+        config['cookie']['name'],
+        config['cookie']['key'],
+        config['cookie']['expiry_days'],
+        config['preauthorized']
+    )
+
+    name, authentication_status, username = authenticator.login('Let me in', 'main')
+
+    if authentication_status:
+        authenticator.logout('Logout', 'main')
+        st.write(f'Welcome *{name}*')
+        st.title('Some content')
+    elif authentication_status == False:
+        st.error('Username/password is incorrect')
+    elif authentication_status == None:
+        st.warning('Please enter your username and password')
 
 
 # OneSignal Initialization Script
