@@ -1,4 +1,6 @@
 import streamlit as st
+from Login import Login
+from Register import Register
 
 
 st.set_page_config(page_title="svAIsthi - Home", page_icon="💊")
@@ -6,11 +8,11 @@ st.set_page_config(page_title="svAIsthi - Home", page_icon="💊")
 st.title("Welcome to svAIsthi")
 st.caption("Choose your action below:")
 
-# Navigation buttons
-if st.button("Log In"):
-    st.session_state["current_page"] = "Login"
-    st.experimental_rerun()
+# Sidebar for navigation
+page = st.sidebar.selectbox("Choose a page", ["Login", "Register"])
 
-if st.button("Register"):
-    st.session_state["current_page"] = "Register"
-    st.experimental_rerun()
+if page == "Login":
+    login_page()
+elif page == "Register":
+    register_page()
+
