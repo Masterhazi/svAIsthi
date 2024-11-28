@@ -16,7 +16,7 @@ from yaml.loader import SafeLoader
 
 st.set_page_config(
     page_title="💊 svAIsthi",
-    page_icon="https://github.com/Masterhazi/svAIsthi/blob/main/health-8.ico",
+    page_icon="💊",
 )
 
 st.title("Welcome to svAIsthi")
