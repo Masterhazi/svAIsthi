@@ -13,10 +13,10 @@ import yaml
 from yaml.loader import SafeLoader
 
 # Ensure the user is authenticated
-if not st.session_state.get("logged_in", False):
-    st.warning("Please log in first.")
-    st.session_state["current_page"] = "Login"
-    st.experimental_rerun()
+#if not st.session_state.get("logged_in", False):
+    #st.warning("Please log in first.")
+    #st.session_state["current_page"] = "Login"
+    #st.experimental_rerun()
 
 # Load environment variables
 load_dotenv()
