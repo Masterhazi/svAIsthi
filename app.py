@@ -24,7 +24,7 @@ st.caption("Choose your action below:")
 
 if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
-    st.write(st.session_state.logged_in)
+    st.write('status:' st.session_state.logged_in)
 
 # Sidebar for navigation
 page = st.sidebar.selectbox("Choose a page", ["Sign in", "Sign up"])
