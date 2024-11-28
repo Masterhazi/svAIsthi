@@ -13,17 +13,7 @@ def register_page():
             config = yaml.load(file, Loader=SafeLoader)
     except FileNotFoundError:
         # Initialize the config if file is not found
-        config = {
-            'credentials': {
-                'usernames': {}
-            },
-            'cookie': {
-                'name': 'auth_cookie',
-                'key': 'random_key',
-                'expiry_days': 0
-            },
-            'pre-authorized': []  # Empty list of pre-authorized emails (can be populated later)
-        }
+        print('config file not found')
 
     st.subheader("Register User")
 
