@@ -23,7 +23,7 @@ st.caption("Choose your action below:")
 # Sidebar for navigation
 page = st.sidebar.selectbox("Choose a page", ["Sign in", "Sign up"])
 
-if page == "Login":
+if page == "Sign in":
     login_page()
-elif page == "Register":
+elif page == "Sign up":
     register_page()
