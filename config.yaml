@@ -2,7 +2,7 @@ credentials:
   usernames: {}
 
 cookie:
-  expiry_days: 30
+  expiry_days: 0
   key: some_random_key
   name: some_cookie_name
 
