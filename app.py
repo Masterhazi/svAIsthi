@@ -13,10 +13,6 @@ import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 
-if 'logged_in' not in st.session_state:
-    st.session_state.logged_in = False
-    st.write(st.session_state.logged_in)
-
 
 st.set_page_config(
     page_title="💊 svAIsthi",
@@ -25,6 +21,10 @@ st.set_page_config(
 
 st.title("Welcome to svAIsthi")
 st.caption("Choose your action below:")
+
+if 'logged_in' not in st.session_state:
+    st.session_state.logged_in = False
+    st.write(st.session_state.logged_in)
 
 # Sidebar for navigation
 page = st.sidebar.selectbox("Choose a page", ["Sign in", "Sign up"])
