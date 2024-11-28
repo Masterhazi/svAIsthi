@@ -3,9 +3,9 @@ import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 
-st.set_page_config(page_title="Log In", page_icon="🔑")
 
 st.title("Log In to svAIsthi")
+
 
 def login_page():
     # Load existing credentials from a YAML file
