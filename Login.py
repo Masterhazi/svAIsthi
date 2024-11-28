@@ -38,12 +38,23 @@ def login_page():
         name, authentication_status, username = login_result
 
         if authentication_status:
+            # Store login status in session_state
+            st.session_state.logged_in = True
+            st.session_state.username = username
+            st.session_state.name = name
             authenticator.logout('Logout', 'main')
-            st.write(f'Welcome *{name}*')
-            st.title('Some content')
+            st.success(f'Welcome *{name}*')
+
+            # Use rerun to trigger a page refresh and go to home.py
+            st.experimental_rerun()
+
         elif authentication_status == False:
             st.error('Username/password is incorrect')
         elif authentication_status == None:
             st.warning('Please enter your username and password')
+
     else:
         st.error('Login failed. Please try again.')
+
+# Call the login page function
+login_page()
