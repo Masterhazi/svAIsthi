@@ -76,7 +76,17 @@ st.caption('Your AI assistant for health education and help')
 imaged = st.file_uploader("Choose the image", type=["jpg", "png", "jpeg", "webp"])
 if imaged:
     st.image(imaged, caption="Image Uploaded", use_column_width=True)
+    
+enable = st.checkbox('Enable camera')
+picture = st.camera_input('Take a picture', disabled = not enable)
+
+if picture:
+    st.image(picture, caption = 'thanks for the image', type = ['jpg', 'png', 'jpeg', 'webp'])
+
+if imaged is None:
+    imaged = picture
     imgg = Image.open(imaged)
+    
 
 # User information inputs
 st.header('User Information')
