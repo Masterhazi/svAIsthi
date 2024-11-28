@@ -14,7 +14,7 @@ import yaml
 from yaml.loader import SafeLoader
 
 if 'logged_in' not in st.session_state:
-    st.session_state['logged_in'] = False
+    st.session_state.logged_in = False
 
 
 st.set_page_config(
