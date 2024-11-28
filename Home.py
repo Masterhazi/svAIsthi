@@ -1,5 +1,12 @@
 import streamlit as st
 
+if "current_page" not in st.session_state:
+    st.session_state["current_page"] = "Home"
+
+if st.session_state["current_page"] != "Home":
+    st.experimental_set_query_params(page=st.session_state["current_page"])
+
+
 st.set_page_config(page_title="svAIsthi - Home", page_icon="💊")
 
 st.title("Welcome to svAIsthi")
