@@ -3,9 +3,7 @@ import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 
-
 st.title("Log In to svAIsthi")
-
 
 def login_page():
     # Load existing credentials from a YAML file
@@ -26,7 +24,7 @@ def login_page():
     login_result = authenticator.login(
         location='main',  # The form will be rendered in the main area
         max_concurrent_users=None,  # No limit on concurrent logins
-        max_login_attempts=3,  # Maximum of 3 login attempts before blocking
+        max_login_attempts=0,  # Maximum of 3 login attempts before blocking
         fields={"username": "Username", "password": "Password"},  # Custom field names
         captcha=True,  # Enable captcha to prevent bots
         single_session=True,  # Only allow one session per user at a time
@@ -49,12 +47,14 @@ def login_page():
             st.experimental_rerun()
 
         elif authentication_status == False:
-            st.error('Username/password is incorrect')
-        elif authentication_status == None:
-            st.warning('Please enter your username and password')
-
-    else:
-        st.error('Login failed. Please try again.')
+            st.error('Incorrect password. Please try again.')
+        
+    elif login_result is None:
+        # If login_result is None, this indicates either wrong username or captcha failure
+        st.error('Incorrect username or captcha. Please try again.')
+        
+    if 'authentication_status' not in locals():
+        st.warning('Your account does not exist. Please register.')
 
 # Call the login page function
 login_page()
