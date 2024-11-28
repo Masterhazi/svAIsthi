@@ -21,7 +21,7 @@ def register_page():
             'cookie': {
                 'name': 'auth_cookie',
                 'key': 'random_key',
-                'expiry_days': 30
+                'expiry_days': 0
             }
         }
 
@@ -36,7 +36,8 @@ def register_page():
         elif any(user.get('email') == email for user in config['credentials']['usernames'].values()):
             st.error("Email already registered. Please use a different email.")
         else:
-            hashed_password = stauth.Hasher([password]).hash()[0]
+            # Corrected password hashing using generate()
+            hashed_password = stauth.Hasher([password]).generate()[0]
             new_user = {
                 "name": username,
                 "email": email,
@@ -50,4 +51,3 @@ def register_page():
 
             st.success("User registered successfully! Please log in.")
             st.experimental_rerun()
-
