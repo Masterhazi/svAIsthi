@@ -20,7 +20,7 @@ def register_page():
             'cookie': {
                 'name': 'auth_cookie',
                 'key': 'random_key',
-                'expiry_days': 30
+                'expiry_days': 0
             },
             'pre-authorized': []  # Empty list of pre-authorized emails (can be populated later)
         }
@@ -30,12 +30,14 @@ def register_page():
     # Define the register_user widget configuration
     try:
         # Use the register_user widget
-        email_of_registered_user, username_of_registered_user, name_of_registered_user = stauth.Authenticate(
+        authenticator = stauth.Authenticate(
             config['credentials'], 
             config['cookie']['name'], 
             config['cookie']['key'], 
             config['cookie']['expiry_days']
-        ).register_user(
+        )
+
+        email_of_registered_user, username_of_registered_user, name_of_registered_user = authenticator.register_user(
             location='main',  # Registration widget location on the main page
             pre_authorized=config.get('pre-authorized', []),  # Pre-authorized list of emails
             fields={'Form name': 'Register user', 'Email': 'Email', 'Username': 'Username', 
@@ -52,9 +54,15 @@ def register_page():
             st.write(f"Registered Email: {email_of_registered_user}")
             st.write(f"Registered Username: {username_of_registered_user}")
             st.write(f"Registered Name: {name_of_registered_user}")
-            # Optionally remove user from the pre-authorized list
-            if email_of_registered_user in config['pre-authorized']:
-                config['pre-authorized'].remove(email_of_registered_user)
+
+            # Update the config dictionary with the new user's information
+            if username_of_registered_user not in config['credentials']['usernames']:
+                config['credentials']['usernames'][username_of_registered_user] = {
+                    'email': email_of_registered_user,
+                    'name': name_of_registered_user,
+                    'password': authenticator.get_password_hash(username_of_registered_user),
+                    'password_hint': 'Some hint'  # Add or modify as necessary
+                }
 
             # Save updated credentials to config.yaml
             with open('config.yaml', 'w') as file:
