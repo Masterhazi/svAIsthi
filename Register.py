@@ -3,7 +3,7 @@ import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 
-st.set_page_config(page_title="Register", page_icon="📝")
+
 
 st.title("Register for svAIsthi")
 
