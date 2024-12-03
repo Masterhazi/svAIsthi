@@ -29,7 +29,7 @@ st.caption('Your AI assistant for health education and help')
 # Image uploader (Allow the user to upload images)
 imaged = st.file_uploader("Choose the image", type=["jpg", "png", "jpeg", "webp"])
 if imaged:
-    st.image(imaged, caption="Image Uploaded", use_column_width=True)
+    st.image(imaged, caption="Image Uploaded", use_container_width=True)
 
 enable = st.checkbox('Enable camera')
 picture = st.camera_input('Take a picture', disabled=not enable)
@@ -37,11 +37,7 @@ picture = st.camera_input('Take a picture', disabled=not enable)
 if imaged or picture is not None:
     imgg = Image.open(imaged if imaged else picture)
 
-if picture is not None:
-    imaged = picture
-    imgg = Image.open(imaged)
-else:
-    imgg = Image.open(imaged)
+
 
 
 # User information inputs
@@ -270,6 +266,11 @@ def process_video_summary(youtube_url):
 submit = st.button('Generate', type='primary')
 
 if submit and imaged:
+    if picture is not None:
+        imaged = picture
+        imgg = Image.open(imaged)
+    else:
+        imgg = Image.open(imaged)
     with st.spinner("Generating your guide..."):
         try:
             response_text = genmodel(user_input=user_inp, img=imgg)
