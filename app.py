@@ -240,7 +240,7 @@ def process_video_summary(youtube_url):
         taking into account their current medical condition and medication routine.
         The user should end up with at least 10 steps like step-by-step guidance that helps in using the device.
         Here is the transcription of the video. Use this:
-        {transcription_text}
+        {transcription_text}, you dont have to reiterate the task which you have been given instead just proceed with the task
         """
         print(transcription_text)  # For debugging purposes
         
