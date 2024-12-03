@@ -37,6 +37,13 @@ picture = st.camera_input('Take a picture', disabled=not enable)
 if imaged or picture is not None:
     imgg = Image.open(imaged if imaged else picture)
 
+if picture is not None:
+    imaged = picture
+    imgg = Image.open(imaged)
+else:
+    imgg = Image.open(imaged)
+
+
 # User information inputs
 st.header('User Information')
 user_name = st.text_input('Please input your name')
