@@ -9,3 +9,12 @@ fpdf2
 google-generativeai
 streamlit-authenticator
 PyYAML
+deepgram-sdk
+assemblyai
+yt-dlp
+ffmpeg-python
+tensorflow==2.16.1
+tf-keras
+accelerate 
+bitsandbytes
+torch
